@@ -39,7 +39,6 @@ const totalCount      = $('totalCount');
 const percentDisplay  = $('percentDisplay');
 const progressStatus  = $('progressStatus');
 
-const themeBtns = document.querySelectorAll('.theme-btn');
 const canvas    = $('particleCanvas');
 const ctx       = canvas.getContext('2d');
 
@@ -325,18 +324,11 @@ function resetAll() {
 }
 
 // ── THEME ──────────────────────────────
-function applyTheme(theme) {
-  state.theme = theme;
-  document.body.dataset.theme = theme;
-  themeBtns.forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.theme === theme);
-  });
+function applyTheme(theme = 'green') {
+  state.theme = 'green';
+  document.body.dataset.theme = 'green';
   saveToStorage();
 }
-
-themeBtns.forEach(btn => {
-  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
-});
 
 // ── EXPORT ─────────────────────────────
 exportBtn.addEventListener('click', (e) => {
@@ -353,7 +345,7 @@ exportPDFBtn.addEventListener('click', async () => {
   try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    const theme = state.theme === 'green' ? '#00ff8c' : state.theme === 'blue' ? '#00b4ff' : '#b450ff';
+    const theme = '#00ff8c';
 
     // Header
     doc.setFillColor(3, 9, 18);
