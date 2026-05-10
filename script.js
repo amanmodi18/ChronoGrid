@@ -75,7 +75,7 @@ function animateParticles() {
     const p = particles[i];
     p.x += p.vx;
     p.y += p.vy;
-    p.vy += 0.04; // slight gravity
+    p.vy += 0.04;
     p.life -= p.decay;
     if (p.life <= 0) { particles.splice(i, 1); continue; }
 
@@ -93,7 +93,6 @@ function animateParticles() {
 }
 animateParticles();
 
-// ── SOUND ──────────────────────────────
 let audioCtx = null;
 
 function ensureAudio() {
@@ -114,7 +113,7 @@ function playTick() {
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
     osc.start(audioCtx.currentTime);
     osc.stop(audioCtx.currentTime + 0.15);
-  } catch(e) { /* silent fail */ }
+  } catch(e) {}
 }
 
 function playUncheck() {
@@ -131,10 +130,9 @@ function playUncheck() {
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
     osc.start(audioCtx.currentTime);
     osc.stop(audioCtx.currentTime + 0.15);
-  } catch(e) { /* silent fail */ }
+  } catch(e) {}
 }
 
-// ── DATE UTILS ─────────────────────────
 const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
@@ -160,7 +158,6 @@ function generateDates(startStr, intervalDays, total) {
   return dates;
 }
 
-// ── STORAGE ────────────────────────────
 function saveToStorage() {
   const payload = {
     dates: state.dates.map(d => d.toISOString()),
@@ -179,8 +176,7 @@ function loadFromStorage() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const data = JSON.parse(raw);
-    return data;
+    return JSON.parse(raw);
   } catch(e) { return null; }
 }
 
@@ -188,8 +184,7 @@ function clearStorage() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-// ── PROGRESS ───────────────────────────
-function updateProgress(animate = false) {
+function updateProgress() {
   const total = state.dates.length;
   const done  = state.checked.filter(Boolean).length;
   const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -201,34 +196,20 @@ function updateProgress(animate = false) {
   progressFill.style.width = pct + '%';
   progressGlow.style.width = pct + '%';
 
-  if (pct === 0)        progressStatus.textContent = 'AWAITING MISSION LAUNCH';
-  else if (pct < 25)    progressStatus.textContent = 'MISSION INITIATED — STAND BY';
-  else if (pct < 50)    progressStatus.textContent = 'PROGRESS LOGGED — CONTINUE MISSION';
-  else if (pct < 75)    progressStatus.textContent = 'HALFWAY MARK CROSSED — SUSTAIN EFFORT';
-  else if (pct < 100)   progressStatus.textContent = 'APPROACHING COMPLETION — FINAL STRETCH';
-  else                  progressStatus.textContent = '✓ MISSION ACCOMPLISHED — ALL CHECKPOINTS CLEARED';
-
-  // completion badge
-  let badge = document.querySelector('.complete-badge');
-  if (!badge) {
-    badge = document.createElement('div');
-    badge.className = 'complete-badge';
-    badge.textContent = '◈ ALL CHECKPOINTS CLEARED ◈';
-    progressPanel.appendChild(badge);
-  }
-  badge.classList.toggle('show', pct === 100);
+  if (pct === 0) progressStatus.textContent = 'AWAITING MISSION LAUNCH';
+  else if (pct < 25) progressStatus.textContent = 'MISSION INITIATED — STAND BY';
+  else if (pct < 50) progressStatus.textContent = 'PROGRESS LOGGED — CONTINUE MISSION';
+  else if (pct < 75) progressStatus.textContent = 'HALFWAY MARK CROSSED — SUSTAIN EFFORT';
+  else if (pct < 100) progressStatus.textContent = 'APPROACHING COMPLETION — FINAL STRETCH';
+  else progressStatus.textContent = '✓ MISSION ACCOMPLISHED — ALL CHECKPOINTS CLEARED';
 }
 
-// ── CHECKLIST RENDER ───────────────────
-function renderChecklist(animateItems = false) {
+function renderChecklist() {
   checklistContainer.innerHTML = '';
 
   state.dates.forEach((dateObj, i) => {
     const item = document.createElement('div');
     item.className = 'checklist-item' + (state.checked[i] ? ' completed' : '');
-    if (animateItems) {
-      item.style.animationDelay = `${i * 0.04}s`;
-    }
 
     item.innerHTML = `
       <span class="item-index">${String(i + 1).padStart(2, '0')}</span>
@@ -248,89 +229,52 @@ function toggleItem(index, itemEl) {
 
   if (!wasChecked) {
     playTick();
-    itemEl.classList.add('completed', 'flash');
+    itemEl.classList.add('completed');
     itemEl.querySelector('.custom-checkbox').textContent = '✓';
-    setTimeout(() => itemEl.classList.remove('flash'), 500);
-
-    // Particles at item center
-    const rect = itemEl.getBoundingClientRect();
-    spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 16);
   } else {
     playUncheck();
     itemEl.classList.remove('completed');
     itemEl.querySelector('.custom-checkbox').textContent = '';
   }
 
-  updateProgress(true);
+  updateProgress();
   saveToStorage();
 }
 
-// ── GENERATE ───────────────────────────
 function generateChecklist() {
-  const startVal    = startDateInput.value;
+  const startVal = startDateInput.value;
   const intervalVal = parseInt(intervalDaysInput.value, 10);
-  const totalVal    = parseInt(totalIntervalsInput.value, 10);
+  const totalVal = parseInt(totalIntervalsInput.value, 10);
 
-  if (!startVal)         return shake(startDateInput);
-  if (!intervalVal || intervalVal < 1) return shake(intervalDaysInput);
-  if (!totalVal || totalVal < 1)       return shake(totalIntervalsInput);
+  if (!startVal || !intervalVal || !totalVal) return;
 
-  state.dates   = generateDates(startVal, intervalVal, totalVal);
+  state.dates = generateDates(startVal, intervalVal, totalVal);
   state.checked = new Array(totalVal).fill(false);
 
   saveToStorage();
-  showChecklist(true);
+  showChecklist();
 }
 
-function shake(el) {
-  el.style.animation = 'none';
-  el.offsetHeight; // reflow
-  el.style.animation = 'slideIn 0.2s ease';
-  el.style.borderColor = '#ff4466';
-  el.style.boxShadow = '0 0 10px rgba(255,68,102,0.3)';
-  setTimeout(() => {
-    el.style.borderColor = '';
-    el.style.boxShadow = '';
-  }, 800);
-}
-
-function showChecklist(animateItems = false) {
+function showChecklist() {
   progressPanel.style.display = '';
   checklistPanel.style.display = '';
 
-  renderChecklist(animateItems);
+  renderChecklist();
   updateProgress();
-
-  // Smooth scroll to checklist
-  setTimeout(() => checklistPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
 }
 
-// ── RESET ──────────────────────────────
 function resetAll() {
   if (!confirm('Reset all progress? This cannot be undone.')) return;
+
   clearStorage();
-  state.dates   = [];
+  state.dates = [];
   state.checked = [];
 
-  progressPanel.style.display   = 'none';
-  checklistPanel.style.display  = 'none';
-  checklistContainer.innerHTML  = '';
-
-  startDateInput.value          = '';
-  intervalDaysInput.value       = '7';
-  totalIntervalsInput.value     = '10';
-
-  inputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  progressPanel.style.display = 'none';
+  checklistPanel.style.display = 'none';
+  checklistContainer.innerHTML = '';
 }
 
-// ── THEME ──────────────────────────────
-function applyTheme(theme = 'green') {
-  state.theme = 'green';
-  document.body.dataset.theme = 'green';
-  saveToStorage();
-}
-
-// ── EXPORT ─────────────────────────────
 exportBtn.addEventListener('click', (e) => {
   e.stopPropagation();
   exportMenu.style.display = exportMenu.style.display === 'none' ? 'flex' : 'none';
@@ -342,14 +286,15 @@ document.addEventListener('click', () => {
 
 exportPDFBtn.addEventListener('click', async () => {
   exportMenu.style.display = 'none';
+
   try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const theme = '#00ff8c';
 
-    // Header
     doc.setFillColor(3, 9, 18);
     doc.rect(0, 0, 210, 297, 'F');
+
     doc.setTextColor(theme);
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
@@ -359,28 +304,27 @@ exportPDFBtn.addEventListener('click', async () => {
     doc.setFontSize(8);
     doc.text(`Generated: ${new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'})}`, 14, 28);
 
-    const done  = state.checked.filter(Boolean).length;
+    const done = state.checked.filter(Boolean).length;
     const total = state.dates.length;
-    const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
     doc.text(`Progress: ${done}/${total} (${pct}%)`, 14, 34);
 
-    // Items
     let y = 46;
     doc.setFontSize(10);
+
     state.dates.forEach((dateObj, i) => {
       const checked = state.checked[i];
+
       doc.setFillColor(checked ? 6 : 4, checked ? 15 : 9, checked ? 30 : 18);
       doc.roundedRect(14, y - 4, 182, 8, 1, 1, 'F');
 
-      // Index
       doc.setTextColor(60, 100, 70);
-      doc.setFont('helvetica', 'normal');
       doc.text(String(i + 1).padStart(2, '0'), 18, y + 1);
 
-      // Checkbox
       doc.setDrawColor(checked ? theme : '#333');
+
       if (checked) {
-        doc.setFillColor(0, checked ? 200 : 50, checked ? 100 : 50);
+        doc.setFillColor(0, 200, 100);
         doc.roundedRect(27, y - 3, 5, 5, 0.5, 0.5, 'FD');
         doc.setTextColor(3, 9, 18);
         doc.setFontSize(7);
@@ -390,31 +334,42 @@ exportPDFBtn.addEventListener('click', async () => {
         doc.roundedRect(27, y - 3, 5, 5, 0.5, 0.5, 'D');
       }
 
-      // Date
       const col = checked ? theme : '#cceecc';
       doc.setTextColor(parseInt(col.slice(1,3),16), parseInt(col.slice(3,5),16), parseInt(col.slice(5,7),16));
-      doc.setFont('helvetica', checked ? 'bold' : 'normal');
       doc.text(formatDate(dateObj), 36, y + 1);
 
-      // Day
       doc.setTextColor(60, 100, 70);
       doc.setFontSize(7);
       doc.text(getDayLabel(dateObj), 185, y + 1, { align: 'right' });
       doc.setFontSize(10);
 
       y += 10;
-      if (y > 280) { doc.addPage(); y = 20; }
+
+      if (y > 280) {
+        doc.addPage();
+        doc.setFillColor(3, 9, 18);
+        doc.rect(0, 0, 210, 297, 'F');
+        y = 20;
+      }
+    });
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 255, 140);
+    doc.textWithLink('@unfollowaman', 105, 290, {
+      align: 'center',
+      url: 'https://x.com/unfollowaman'
     });
 
     doc.save('chrono-grid-checklist.pdf');
   } catch(e) {
-    alert('PDF export failed. Please try Image export instead.');
+    alert('PDF export failed.');
     console.error(e);
   }
 });
 
 exportImageBtn.addEventListener('click', async () => {
   exportMenu.style.display = 'none';
+
   try {
     const el = checklistPanel;
     const canvas = await html2canvas(el, {
@@ -422,17 +377,17 @@ exportImageBtn.addEventListener('click', async () => {
       scale: 2,
       logging: false
     });
+
     const link = document.createElement('a');
     link.download = 'chrono-grid-checklist.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   } catch(e) {
-    alert('Image export failed. Please try PDF export instead.');
+    alert('Image export failed.');
     console.error(e);
   }
 });
 
-// ── SET DEFAULT DATE ───────────────────
 function setDefaultDate() {
   const today = new Date();
   const y = today.getFullYear();
@@ -441,39 +396,27 @@ function setDefaultDate() {
   startDateInput.value = `${y}-${m}-${d}`;
 }
 
-// ── INIT / RESTORE ─────────────────────
 function init() {
   setDefaultDate();
 
   const saved = loadFromStorage();
-  if (saved) {
-    // Restore theme first
-    if (saved.theme) applyTheme(saved.theme);
 
-    // Restore inputs
+  if (saved) {
     if (saved.inputs) {
-      if (saved.inputs.startDate)      startDateInput.value      = saved.inputs.startDate;
-      if (saved.inputs.intervalDays)   intervalDaysInput.value   = saved.inputs.intervalDays;
-      if (saved.inputs.totalIntervals) totalIntervalsInput.value = saved.inputs.totalIntervals;
+      startDateInput.value = saved.inputs.startDate || startDateInput.value;
+      intervalDaysInput.value = saved.inputs.intervalDays || '7';
+      totalIntervalsInput.value = saved.inputs.totalIntervals || '10';
     }
 
-    // Restore dates & checked states
     if (saved.dates && saved.dates.length > 0) {
-      state.dates   = saved.dates.map(iso => new Date(iso));
+      state.dates = saved.dates.map(iso => new Date(iso));
       state.checked = saved.checked || new Array(state.dates.length).fill(false);
-      showChecklist(false);
+      showChecklist();
     }
   }
 }
 
-// ── EVENT LISTENERS ────────────────────
 generateBtn.addEventListener('click', generateChecklist);
 resetBtn.addEventListener('click', resetAll);
 
-// Allow Enter key on inputs
-[startDateInput, intervalDaysInput, totalIntervalsInput].forEach(el => {
-  el.addEventListener('keydown', e => { if (e.key === 'Enter') generateChecklist(); });
-});
-
-// ── BOOT ───────────────────────────────
 init();
