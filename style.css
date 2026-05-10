@@ -170,5 +170,60 @@ body {
 .checklist-container::-webkit-scrollbar-track { background: #D8D0C0; border-radius: 10px; }
 .checklist-container::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: var(--panel-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  transition: var(--transition);
+  font-family: var(--font-ui);
+  letter-spacing: 1px;
+}
+
+.social-links a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  border-color: var(--primary);
+}
+
+.social-links svg {
+  width: 16px;
+  height: 16px;
+}
+
 @media (max-width: 768px) { .button-row { display: grid; grid-template-columns: 1fr 1fr; } }
-@media (max-width: 480px) { .button-row { grid-template-columns: 1fr; } .progress-label-row { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 480px) {
+  .button-row { grid-template-columns: 1fr; }
+  .progress-label-row { flex-direction: column; align-items: flex-start; }
+  .social-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .social-links a {
+    width: 100%;
+    justify-content: center;
+  }
+}
