@@ -105,6 +105,16 @@ body {
   outline: none;
   transition: var(--transition);
 }
+
+#taskNames {
+  resize: none;
+  min-height: 120px;
+  height: 120px;
+  margin-bottom: 24px;
+  padding-top: 12px;
+  line-height: 1.5;
+}
+
 .sci-input::placeholder { color: var(--text-muted); }
 .sci-input:focus { box-shadow: inset 0 2px 4px rgba(0,0,0,.12), 0 0 0 2px var(--primary); }
 
