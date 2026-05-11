@@ -181,26 +181,35 @@ exportImageBtn.addEventListener('click', async () => {
     ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
     ctx.fillStyle = '#111111';
-    ctx.fillRect(120, 250, 1360, 1400);
+    ctx.fillRect(110, 320, 1380, 1280);
 
-    ctx.fillStyle = '#1e1e1e';
-    ctx.fillRect(150, 280, 1300, 1340);
+    ctx.fillStyle = '#1f1f1f';
+    ctx.fillRect(145, 355, 1310, 1210);
 
-    const imageWidth = 1180;
+    const imageWidth = 1120;
     const imageHeight = screenshotCanvas.height * (imageWidth / screenshotCanvas.width);
 
     const imageX = (finalCanvas.width - imageWidth) / 2;
-    const imageY = 380;
+    const imageY = (finalCanvas.height - imageHeight) / 2 + 120;
 
     ctx.drawImage(screenshotCanvas, imageX, imageY, imageWidth, imageHeight);
 
-    ctx.fillStyle = '#000';
-    ctx.font = 'bold 80px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('CHRONO.GRID', finalCanvas.width / 2, 140);
 
+    ctx.fillStyle = '#CC2222';
+    ctx.font = 'bold 92px Georgia';
+    ctx.fillText('CHRONO', 700, 145);
+
+    ctx.fillStyle = '#2E2A25';
+    ctx.fillText('.GRID', 975, 145);
+
+    ctx.fillStyle = '#2E2A25';
     ctx.font = '36px Arial';
-    ctx.fillText('INTERVAL CHECKLIST SYSTEM', finalCanvas.width / 2, 200);
+    ctx.fillText('INTERVAL CHECKLIST SYSTEM', finalCanvas.width / 2, 210);
+
+    ctx.fillStyle = '#CC2222';
+    ctx.font = 'bold 42px Arial';
+    ctx.fillText('CHECKPOINT LOG', finalCanvas.width / 2, 285);
 
     const link = document.createElement('a');
     link.download = 'chrono-grid-showcase.png';
