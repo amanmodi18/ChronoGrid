@@ -172,8 +172,8 @@ exportImageBtn.addEventListener('click', async () => {
     });
 
     const finalCanvas = document.createElement('canvas');
-    finalCanvas.width = 1600;
-    finalCanvas.height = 2000;
+    finalCanvas.width = 1080;
+    finalCanvas.height = 1920;
 
     const ctx = finalCanvas.getContext('2d');
 
@@ -181,20 +181,20 @@ exportImageBtn.addEventListener('click', async () => {
     ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
     ctx.fillStyle = '#0f0f10';
-    ctx.fillRect(95, 330, 1410, 1280);
+    ctx.fillRect(55, 320, 970, 1280);
 
     const gradient = ctx.createLinearGradient(0, 0, finalCanvas.width, 0);
     gradient.addColorStop(0, '#1a1a1d');
     gradient.addColorStop(1, '#202024');
 
     ctx.fillStyle = gradient;
-    ctx.fillRect(125, 365, 1350, 1210);
+    ctx.fillRect(80, 350, 920, 1220);
 
-    const imageWidth = 1120;
+    const imageWidth = 760;
     const imageHeight = screenshotCanvas.height * (imageWidth / screenshotCanvas.width);
 
     const imageX = (finalCanvas.width - imageWidth) / 2;
-    const imageY = ((1210 - imageHeight) / 2) + 365;
+    const imageY = ((1220 - imageHeight) / 2) + 350;
 
     ctx.shadowColor = 'rgba(0,0,0,0.22)';
     ctx.shadowBlur = 18;
@@ -203,7 +203,7 @@ exportImageBtn.addEventListener('click', async () => {
 
     ctx.textAlign = 'center';
 
-    ctx.font = 'bold 96px Alfa Slab One';
+    ctx.font = 'bold 72px Alfa Slab One';
 
     const chronoWidth = ctx.measureText('CHRONO').width;
     const gridWidth = ctx.measureText('.GRID').width;
@@ -217,7 +217,7 @@ exportImageBtn.addEventListener('click', async () => {
     ctx.fillText('.GRID', logoStartX + chronoWidth + (gridWidth / 2), 145);
 
     ctx.fillStyle = '#1f1f1f';
-    ctx.font = '48px Oswald';
+    ctx.font = '38px Oswald';
     ctx.fillText('INTERVAL CHECKLIST SYSTEM', finalCanvas.width / 2, 220);
 
     const link = document.createElement('a');
