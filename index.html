@@ -18,14 +18,11 @@
 </head>
 <body data-theme="green">
 
-  <!-- Scanline overlay -->
   <div class="scanlines"></div>
-  <!-- Particle canvas -->
   <canvas id="particleCanvas"></canvas>
 
   <div class="app-wrapper">
 
-    <!-- Header -->
     <header class="site-header">
       <div class="logo-block">
         <span class="logo-prefix">◈</span>
@@ -36,7 +33,6 @@
 
     </header>
 
-    <!-- Input Panel -->
     <section class="panel input-panel" id="inputPanel">
       <div class="panel-header">
         <span class="panel-tag">01</span>
@@ -67,6 +63,13 @@
         </div>
       </div>
 
+      <div class="input-group" style="margin-top:16px;">
+        <label class="input-label" for="taskNames">
+          <span class="label-icon">✎</span> CHECKPOINT NAMES
+        </label>
+        <textarea id="taskNames" class="sci-input" rows="4" placeholder="Enter one checkpoint name per line"></textarea>
+      </div>
+
       <div class="button-row">
         <button class="sci-btn primary" id="generateBtn">
           <span class="btn-icon">⚡</span>
@@ -79,7 +82,6 @@
       </div>
     </section>
 
-    <!-- Progress Panel -->
     <section class="panel progress-panel" id="progressPanel" style="display:none">
       <div class="panel-header">
         <span class="panel-tag">02</span>
@@ -114,7 +116,6 @@
         </button>
       </div>
 
-      <!-- Export submenu -->
       <div class="export-menu" id="exportMenu" style="display:none">
         <button class="export-option" id="exportPDF">
           <span>◧</span> Export as PDF
@@ -125,7 +126,6 @@
       </div>
     </section>
 
-    <!-- Checklist Panel -->
     <section class="panel checklist-panel" id="checklistPanel" style="display:none">
       <div class="panel-header">
         <span class="panel-tag">03</span>
@@ -133,33 +133,14 @@
         <div class="panel-line"></div>
       </div>
 
-      <div class="checklist-container" id="checklistContainer">
-        <!-- Items injected by JS -->
-      </div>
+      <div class="checklist-container" id="checklistContainer"></div>
     </section>
 
     <footer class="site-footer">
       <span>◈ CHRONO.GRID SYSTEM — AUTOSAVE ACTIVE ◈</span>
-
-      <div class="social-links">
-        <a href="https://x.com/unfollowaman" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.639 7.584H.474l8.6-9.83L0 1.153h7.594l5.243 6.932z"/>
-          </svg>
-          <span>X / Twitter</span>
-        </a>
-
-        <a href="https://www.instagram.com/unfollowaman_?igsh=MWNieGYzdDU3a3praQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2zm0 2h8.5A3.75 3.75 0 0 1 20 7.75v8.5A3.75 3.75 0 0 1 16.25 20h-8.5A3.75 3.75 0 0 1 4 16.25v-8.5A3.75 3.75 0 0 1 7.75 4m9.5 1a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10m0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6"/>
-          </svg>
-          <span>Instagram</span>
-        </a>
-      </div>
     </footer>
   </div>
 
-  <!-- jsPDF + html-to-image via CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="script.js"></script>
