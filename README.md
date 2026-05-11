@@ -16,8 +16,8 @@
 - Interactive checklist with tick boxes
 - Auto-save using browser localStorage
 - Dynamic progress bar (completion tracking)
-- Sci-fi UI with neon themes (green, blue, purple)
-- Sound + visual effect on task completion
+- Sci-fi UI with neon themes
+- Sound + visual effects on task completion
 - Export checklist as PDF or image
 - No login, no database, fully private
 
@@ -25,11 +25,20 @@
 
 🗂️ Project Structure
 
-project-folder/
+```bash
+ChronoGrid/
 │
-├── index.html     # Structure (UI layout)
-├── style.css      # Styling (sci-fi design)
-├── script.js      # Logic (functionality)
+├── index.html          # Main application structure
+├── style.css           # UI styling and responsive design
+├── script.js           # Core application logic
+├── manifest.json       # PWA configuration
+├── icon192.png         # App icon (192x192)
+│
+└── assets/             # Optional future assets folder
+    ├── images/         # UI images / graphics
+    ├── icons/          # Additional icons
+    └── sounds/         # Sound effects
+```
 
 ---
 
@@ -57,43 +66,49 @@ project-folder/
 
 🎨 Design
 
-- Dark futuristic theme
-- Neon glow accents
-- Minimal and clean interface
-- Theme switcher included
+- Futuristic sci-fi inspired interface
+- Minimal and clean layout
+- Responsive across devices
+- Interactive UI feedback effects
 
 ---
 
-📤 Export
+📤 Export System
 
 - Export checklist as:
   - PDF
-  - Image
+  - Styled image showcase
 - Generated directly in browser
+- Custom branded export layouts
 
 ---
 
 🛠️ Tech Stack
 
-- HTML
-- CSS
-- Vanilla JavaScript
+- HTML5
+- CSS3
+- Vanilla JavaScript (ES6)
+- html2canvas
+- jsPDF
+- localStorage API
 
 ---
 
 ⚠️ Notes
 
 - Works only on same device/browser (no sync)
-- Keep animations lightweight for performance
-- Designed to be simple, editable, and scalable
+- Lightweight and fully frontend-based
+- Designed for simplicity, speed, and scalability
 
 ---
 
-🚀 Future Improvements (Optional)
+🚀 Future Improvements
 
 - Cloud sync
 - Notifications/reminders
-- Task naming
+- User-defined task names
+- Multi-theme customization
+- Cross-device synchronization
 
 ---
 
