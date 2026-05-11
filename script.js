@@ -194,21 +194,27 @@ exportImageBtn.addEventListener('click', async () => {
     const imageHeight = screenshotCanvas.height * (imageWidth / screenshotCanvas.width);
 
     const imageX = (finalCanvas.width - imageWidth) / 2;
-    const imageY = 500;
+    const imageY = ((1210 - imageHeight) / 2) + 365;
 
-    ctx.shadowColor = 'rgba(0,0,0,0.35)';
-    ctx.shadowBlur = 30;
+    ctx.shadowColor = 'rgba(0,0,0,0.22)';
+    ctx.shadowBlur = 18;
     ctx.drawImage(screenshotCanvas, imageX, imageY, imageWidth, imageHeight);
     ctx.shadowBlur = 0;
 
     ctx.textAlign = 'center';
 
     ctx.font = 'bold 96px Alfa Slab One';
+
+    const chronoWidth = ctx.measureText('CHRONO').width;
+    const gridWidth = ctx.measureText('.GRID').width;
+    const totalLogoWidth = chronoWidth + gridWidth;
+    const logoStartX = (finalCanvas.width - totalLogoWidth) / 2;
+
     ctx.fillStyle = '#CC2222';
-    ctx.fillText('CHRONO', 620, 145);
+    ctx.fillText('CHRONO', logoStartX + (chronoWidth / 2), 145);
 
     ctx.fillStyle = '#1f1f1f';
-    ctx.fillText('.GRID', 960, 145);
+    ctx.fillText('.GRID', logoStartX + chronoWidth + (gridWidth / 2), 145);
 
     ctx.fillStyle = '#1f1f1f';
     ctx.font = '48px Oswald';
