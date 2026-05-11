@@ -180,36 +180,39 @@ exportImageBtn.addEventListener('click', async () => {
     ctx.fillStyle = '#F4B400';
     ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-    ctx.fillStyle = '#111111';
-    ctx.fillRect(110, 320, 1380, 1280);
+    ctx.fillStyle = '#0f0f10';
+    ctx.fillRect(95, 330, 1410, 1280);
 
-    ctx.fillStyle = '#1f1f1f';
-    ctx.fillRect(145, 355, 1310, 1210);
+    const gradient = ctx.createLinearGradient(0, 0, finalCanvas.width, 0);
+    gradient.addColorStop(0, '#1a1a1d');
+    gradient.addColorStop(1, '#202024');
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(125, 365, 1350, 1210);
 
     const imageWidth = 1120;
     const imageHeight = screenshotCanvas.height * (imageWidth / screenshotCanvas.width);
 
     const imageX = (finalCanvas.width - imageWidth) / 2;
-    const imageY = (finalCanvas.height - imageHeight) / 2 + 120;
+    const imageY = 500;
 
+    ctx.shadowColor = 'rgba(0,0,0,0.35)';
+    ctx.shadowBlur = 30;
     ctx.drawImage(screenshotCanvas, imageX, imageY, imageWidth, imageHeight);
+    ctx.shadowBlur = 0;
 
     ctx.textAlign = 'center';
 
+    ctx.font = 'bold 96px Alfa Slab One';
     ctx.fillStyle = '#CC2222';
-    ctx.font = 'bold 92px Georgia';
-    ctx.fillText('CHRONO', 700, 145);
+    ctx.fillText('CHRONO', 620, 145);
 
-    ctx.fillStyle = '#2E2A25';
-    ctx.fillText('.GRID', 975, 145);
+    ctx.fillStyle = '#1f1f1f';
+    ctx.fillText('.GRID', 960, 145);
 
-    ctx.fillStyle = '#2E2A25';
-    ctx.font = '36px Arial';
-    ctx.fillText('INTERVAL CHECKLIST SYSTEM', finalCanvas.width / 2, 210);
-
-    ctx.fillStyle = '#CC2222';
-    ctx.font = 'bold 42px Arial';
-    ctx.fillText('CHECKPOINT LOG', finalCanvas.width / 2, 285);
+    ctx.fillStyle = '#1f1f1f';
+    ctx.font = '48px Oswald';
+    ctx.fillText('INTERVAL CHECKLIST SYSTEM', finalCanvas.width / 2, 220);
 
     const link = document.createElement('a');
     link.download = 'chrono-grid-showcase.png';
