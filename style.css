@@ -17,16 +17,19 @@
   --space-xl: 40px;
   --radius: 6px;
   --transition: all 0.1s ease;
-  --font-display: 'Alfa Slab One', 'Rockwell', serif;
-  --font-ui: 'Oswald', 'Barlow Condensed', sans-serif;
-  --font-body: 'Lato', 'Source Sans 3', sans-serif;
+  --font-display: 'Oswald', sans-serif;
+  --font-ui: 'Oswald', sans-serif;
+  --font-body: 'Oswald', sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-body); }
+*::before, *::after { font-family: var(--font-body); }
+input, button, textarea, select, option { font-family: var(--font-body); }
 
 body {
   min-height: 100vh;
   font-family: var(--font-body);
+  font-weight: 400;
   color: var(--text-primary);
   background-color: var(--bg-linen);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
@@ -48,6 +51,7 @@ body {
 .logo-prefix, .logo-suffix, .logo-accent { color: var(--primary); }
 .logo-text {
   font-family: var(--font-display);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 3px;
   color: #3A3530;
@@ -74,6 +78,7 @@ body {
 }
 .panel-title {
   font-family: var(--font-display);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: #3A3530;
