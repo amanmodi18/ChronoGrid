@@ -22,7 +22,9 @@
   --font-body: 'Oswald', sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-body); }
+*::before, *::after { font-family: var(--font-body); }
+input, button, textarea, select, option { font-family: var(--font-body); }
 
 body {
   min-height: 100vh;
