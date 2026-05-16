@@ -166,7 +166,6 @@ function playUncheck() {
   } catch (e) {}
 }
 
-// ── DATE UTILS ─────────────────────────
 const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
@@ -195,7 +194,6 @@ function generateDates(startStr, intervalDays, total) {
   return dates;
 }
 
-// ── STORAGE ────────────────────────────
 function saveToStorage() {
   const payload = {
     dates: state.dates.map(d => d.toISOString()),
@@ -227,7 +225,6 @@ function clearStorage() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-// ── PROGRESS ───────────────────────────
 function updateProgress() {
   const total = state.dates.length;
   const done = state.checked.filter(Boolean).length;
@@ -248,7 +245,6 @@ function updateProgress() {
   else progressStatus.textContent = '✓ MISSION ACCOMPLISHED — ALL CHECKPOINTS CLEARED';
 }
 
-// ── CHECKLIST RENDER ───────────────────
 function renderChecklist() {
   checklistContainer.innerHTML = '';
 
@@ -293,7 +289,6 @@ function toggleItem(index, itemEl) {
   saveToStorage();
 }
 
-// ── GENERATE ───────────────────────────
 function generateChecklist() {
   const startVal = startDateInput.value;
   const intervalVal = parseInt(intervalDaysInput.value, 10);
@@ -335,7 +330,6 @@ function showChecklist() {
   }, 150);
 }
 
-// ── RESET ──────────────────────────────
 function resetAll() {
   if (!confirm('Reset all progress? This cannot be undone.')) return;
 
@@ -355,7 +349,6 @@ function resetAll() {
   inputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── THEME ──────────────────────────────
 function applyTheme(theme) {
   state.theme = theme;
   document.body.dataset.theme = theme;
@@ -373,7 +366,6 @@ if (themeBtns.length) {
   });
 }
 
-// ── EXPORT ─────────────────────────────
 exportBtn.addEventListener('click', e => {
   e.stopPropagation();
   exportMenu.style.display = exportMenu.style.display === 'none' ? 'flex' : 'none';
@@ -393,13 +385,14 @@ exportPDFBtn.addEventListener('click', async () => {
     doc.setFillColor(232, 224, 208);
     doc.rect(0, 0, 210, 297, 'F');
 
-    doc.setTextColor(45, 42, 37);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(24);
-    doc.text('CHRONO', 70, 22, { align: 'center' });
+
+    doc.setTextColor(45, 42, 37);
+    doc.text('CHRONO', 88, 22, { align: 'right' });
 
     doc.setTextColor(204, 34, 34);
-    doc.text('.GRID', 112, 22, { align: 'center' });
+    doc.text('.GRID', 88, 22, { align: 'left' });
 
     doc.setTextColor(120, 110, 95);
     doc.setFontSize(10);
@@ -530,7 +523,6 @@ exportImageBtn.addEventListener('click', async () => {
   }
 });
 
-// ── SET DEFAULT DATE ───────────────────
 function setDefaultDate() {
   const today = new Date();
 
@@ -541,7 +533,6 @@ function setDefaultDate() {
   startDateInput.value = `${y}-${m}-${d}`;
 }
 
-// ── INIT / RESTORE ─────────────────────
 function init() {
   setDefaultDate();
 
@@ -565,7 +556,6 @@ function init() {
   }
 }
 
-// ── EVENT LISTENERS ────────────────────
 generateBtn.addEventListener('click', generateChecklist);
 resetBtn.addEventListener('click', resetAll);
 
@@ -575,5 +565,4 @@ resetBtn.addEventListener('click', resetAll);
   });
 });
 
-// ── BOOT ───────────────────────────────
 init();
