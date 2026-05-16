@@ -362,6 +362,30 @@ function applyTheme(theme) {
   saveToStorage();
 }
 
+
+const CHECKBOX_ICON_URL = 'https://img.icons8.com/emoji/48/check-box-with-check-emoji.png';
+let checkboxIconDataUrlPromise;
+
+function getCheckboxIconDataUrl() {
+  if (!checkboxIconDataUrlPromise) {
+    checkboxIconDataUrlPromise = fetch(CHECKBOX_ICON_URL)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Checkbox icon request failed: ${response.status}`);
+        }
+        return response.blob();
+      })
+      .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }));
+  }
+
+  return checkboxIconDataUrlPromise;
+}
+
 if (themeBtns.length) {
   themeBtns.forEach(btn => {
     btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
@@ -402,7 +426,7 @@ exportPDFBtn.addEventListener('click', async () => {
 
     let y = 50;
 
-    state.dates.forEach((dateObj, i) => {
+    for (const [i, dateObj] of state.dates.entries()) {
       const checked = state.checked[i];
 
       doc.setFillColor(245, 240, 230);
@@ -416,9 +440,8 @@ exportPDFBtn.addEventListener('click', async () => {
         doc.setFillColor(90, 138, 58);
         doc.roundedRect(30, y - 3, 5, 5, 1, 1, 'F');
 
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(7);
-        doc.text('✓', 31.5, y + 1);
+        const checkboxIcon = await getCheckboxIconDataUrl();
+        doc.addImage(checkboxIcon, 'PNG', 30.6, y - 2.4, 3.8, 3.8);
       } else {
         doc.setDrawColor(190, 180, 160);
         doc.roundedRect(30, y - 3, 5, 5, 1, 1, 'D');
@@ -437,7 +460,7 @@ exportPDFBtn.addEventListener('click', async () => {
         doc.addPage();
         y = 20;
       }
-    });
+    }
 
     doc.setTextColor(204, 34, 34);
     doc.setFontSize(10);
